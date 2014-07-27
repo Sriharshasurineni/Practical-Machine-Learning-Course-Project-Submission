@@ -31,8 +31,15 @@ A random seed of 1024 was selected to insure reproduceability.
 
 
 ## Feature Selection
-I was going to down selected features based on importance. However, My initial results yielded sufficient confidence 
-to use the entire feature set.
+Down selected features based relevance and completness:
+* `Columns that were mostly NA`
+* `the unlabled row index'
+* `user_name`
+* `raw_timestamp_part_1`
+* `raw_timestamp_part_2`
+* `cvtd_timestamp`
+* `new_window`
+* `num_window`
 
 ## Cross Validation
 
