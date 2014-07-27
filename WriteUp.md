@@ -33,7 +33,7 @@ A random seed of 1024 was selected to insure reproduceability.
 ## Feature Selection
 Down selected features based relevance and completness:
 * `Columns that were mostly NA`
-* `the unlabled row index'
+* `the unlabled row index`
 * `user_name`
 * `raw_timestamp_part_1`
 * `raw_timestamp_part_2`
