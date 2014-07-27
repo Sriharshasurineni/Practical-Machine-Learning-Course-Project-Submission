@@ -1,11 +1,11 @@
 #Practical Machine Learning
 
 
-
 library(Hmisc)
 library(caret)
 library(randomForest)
 library(foreach)
+library(doParallel)
 set.seed(2048)
 options(warn=-1)
 
@@ -29,26 +29,21 @@ index <- createDataPartition(y=model_data$classe, p=0.75, list=FALSE )
 training <- model_data[index,]
 testing <- model_data[-index,]
 
-We now build 5 random forests with 150 trees each. We make use of parallel processing to build this
-model. I found several examples of how to perform parallel processing with random forests in R, this
-provided a great speedup.
-
-
-
+registerDoParallel()
 x <- training[-ncol(training)]
 y <- training$classe
 
 rf <- foreach(ntree=rep(250, 4), .combine=randomForest::combine, .packages='randomForest') %dopar% {
 randomForest(x, y, ntree=ntree) 
+}
 
 #Confusion Matrix for Training
-predictions1 <- predict(rf, newdata=training)
-confusionMatrix(predictions1,training$classe)
+predictionsTraining <- predict(rf, newdata=training)
+confusionMatrix(predictionsTraining,training$classe)
 
 #Confusion Matrix for testing 
-predictions2 <- predict(rf, newdata=testing)
-confusionMatrix(predictions2,testing$classe)
-
+predictionsTesting <- predict(rf, newdata=testing)
+confusionMatrix(predictionsTesting,testing$classe)
 
 
 #Coursera provided code for submission
