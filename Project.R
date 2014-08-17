@@ -7,23 +7,26 @@ library(randomForest)
 library(foreach)
 set.seed(998)
 
-training.file       <- 'pml-training.csv'
-test.cases.file     <- 'pml-test.csv'
-training.url        <- 'http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'
-test.cases.url      <- 'http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'
+training.file   <- 'pml-training.csv'
+test.cases.file <- 'pml-test.csv'
+training.url    <- 'http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'
+test.cases.url  <- 'http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'
 
 download.file(training.url, training.file)
 download.file(test.cases.url,test.cases.file )
-training.df<-read.csv(training.file, na.strings=c("NA","#DIV/0!", ""))
-test.cases.df<-read.csv(test.cases.file , na.strings=c("NA", "#DIV/0!", ""))
+training.df   <-read.csv(training.file, na.strings=c("NA","#DIV/0!", ""))
+test.cases.df <-read.csv(test.cases.file , na.strings=c("NA", "#DIV/0!", ""))
 
+# Remove those Features unrelated to calulations (Confusion Matrix)
 # X user_name raw_timestamp_part_1 raw_timestamp_part_2   cvtd_timestamp new_window num_window 
+ training.df   <-training.df[,-c(1:7)]
+ test.cases.df <-training.df[,-c(1:7)]
 
+#Create a stratified random sample of the data into training and test setsseed(998).
+inTraining.matrix    <- createDataPartition(training.df$classe, p = 0.75, list = FALSE)
+training.data.df <- training.df[inTraining.matrix, ]
+testing.data.df  <- training.df[-inTraining.matrix, ]
 
-
-inTraining <- createDataPartition(Sonar$Class, p = 0.75, list = FALSE)
-training <- Sonar[inTraining, ]
-testing <- Sonar[-inTraining, ]
 
 
 for(i in c(8:ncol(training_data)-1)) {training_data[,i] = as.numeric(as.character(training_data[,i]))}
