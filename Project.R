@@ -9,8 +9,10 @@ library(doParallel)
 set.seed(2048)
 options(warn=-1)
 
-training_data <- read.csv("pml-training.csv", na.strings=c("#DIV/0!") )
-evaluation_data <- read.csv("pml-testing.csv", na.strings=c("#DIV/0!") )
+pml.file <- 'pml-training.csv'
+test.file     <- 'pml-test.csv'
+training.url  <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'
+test.url      <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'
 
 
 for(i in c(8:ncol(training_data)-1)) {training_data[,i] = as.numeric(as.character(training_data[,i]))}
