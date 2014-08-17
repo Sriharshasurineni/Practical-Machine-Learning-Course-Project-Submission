@@ -5,14 +5,25 @@ library(Hmisc)
 library(caret)
 library(randomForest)
 library(foreach)
-library(doParallel)
-set.seed(2048)
-options(warn=-1)
+set.seed(998)
 
-pml.file <- 'pml-training.csv'
-test.file     <- 'pml-test.csv'
-training.url  <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'
-test.url      <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'
+training.file       <- 'pml-training.csv'
+test.cases.file     <- 'pml-test.csv'
+training.url        <- 'http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'
+test.cases.url      <- 'http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'
+
+download.file(training.url, training.file)
+download.file(test.cases.url,test.cases.file )
+training.df<-read.csv(training.file, na.strings=c("NA","#DIV/0!", ""))
+test.cases.df<-read.csv(test.cases.file , na.strings=c("NA", "#DIV/0!", ""))
+
+# X user_name raw_timestamp_part_1 raw_timestamp_part_2   cvtd_timestamp new_window num_window 
+
+
+
+inTraining <- createDataPartition(Sonar$Class, p = 0.75, list = FALSE)
+training <- Sonar[inTraining, ]
+testing <- Sonar[-inTraining, ]
 
 
 for(i in c(8:ncol(training_data)-1)) {training_data[,i] = as.numeric(as.character(training_data[,i]))}
