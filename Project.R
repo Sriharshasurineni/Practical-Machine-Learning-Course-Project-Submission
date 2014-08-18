@@ -31,6 +31,28 @@ inTraining.matrix    <- createDataPartition(training.df$classe, p = 0.75, list =
 training.data.df <- training.df[inTraining.matrix, ]
 testing.data.df  <- training.df[-inTraining.matrix, ]
 
+modFit<-train(classe~.,data=training.data.df,method="rf",prox=TRUE)
+> modFit
+Random Forest 
+
+14718 samples
+   52 predictors
+    5 classes: 'A', 'B', 'C', 'D', 'E' 
+
+No pre-processing
+Resampling: Bootstrapped (25 reps) 
+
+Summary of sample sizes: 14718, 14718, 14718, 14718, 14718, 14718, ... 
+
+Resampling results across tuning parameters:
+
+  mtry  Accuracy  Kappa  Accuracy SD  Kappa SD
+  2     0.989     0.987  0.00169      0.00213 
+  27    0.99      0.987  0.0015       0.00189 
+  52    0.982     0.977  0.00385      0.00486 
+
+Accuracy was used to select the optimal model using  the largest value.
+The final value used for the model was mtry = 27. 
 
 
 
