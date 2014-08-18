@@ -14,36 +14,27 @@ test.cases.url  <- 'http://d396qusza40orc.cloudfront.net/predmachlearn/pml-testi
 
 download.file(training.url, training.file)
 download.file(test.cases.url,test.cases.file )
+
 training.df   <-read.csv(training.file, na.strings=c("NA","#DIV/0!", ""))
 test.cases.df <-read.csv(test.cases.file , na.strings=c("NA", "#DIV/0!", ""))
+
+training.df<-training.df[,colSums(is.na(training.df)) == 0]
+test.cases.df <-test.cases.df[,colSums(is.na(test.cases.df)) == 0]
 
 # Remove those Features unrelated to calulations (Confusion Matrix)
 # X user_name raw_timestamp_part_1 raw_timestamp_part_2   cvtd_timestamp new_window num_window 
  training.df   <-training.df[,-c(1:7)]
  test.cases.df <-training.df[,-c(1:7)]
 
-#Create a stratified random sample of the data into training and test setsseed(998).
+#Create a stratified random sample of the data into training and test setsseed(998)
 inTraining.matrix    <- createDataPartition(training.df$classe, p = 0.75, list = FALSE)
 training.data.df <- training.df[inTraining.matrix, ]
 testing.data.df  <- training.df[-inTraining.matrix, ]
 
 
 
-for(i in c(8:ncol(training_data)-1)) {training_data[,i] = as.numeric(as.character(training_data[,i]))}
 
-for(i in c(8:ncol(evaluation_data)-1)) {evaluation_data[,i] = as.numeric(as.character(evaluation_data[,i]))}
 
-#Determine and display out feature set.
-
-feature_set <- colnames(training_data[colSums(is.na(training_data)) == 0])[-(1:7)]
-model_data <- training_data[feature_set]
-feature_set
-
-#build Featue Set Pattition
-
-index <- createDataPartition(y=model_data$classe, p=0.75, list=FALSE )
-training <- model_data[index,]
-testing <- model_data[-index,]
 
 registerDoParallel()
 x <- training[-ncol(training)]
