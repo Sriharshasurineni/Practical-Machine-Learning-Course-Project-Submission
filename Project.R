@@ -57,6 +57,7 @@ Resampling results across tuning parameters:
 Accuracy was used to select the optimal model using  the largest value.
 The final value used for the model was mtry = 27. 
 
+pred <-predict(modFit,test.cases.df); test.cases.df$predRight <-pred==test.cases.df$classe table(pred,test.cases.df$classe)
 
 
 
