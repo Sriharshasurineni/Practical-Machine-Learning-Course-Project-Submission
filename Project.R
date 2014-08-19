@@ -24,7 +24,7 @@ test.cases.df <-test.cases.df[,colSums(is.na(test.cases.df)) == 0]
 # Remove those Features unrelated to calulations (Confusion Matrix)
 # X user_name raw_timestamp_part_1 raw_timestamp_part_2   cvtd_timestamp new_window num_window 
  training.df   <-training.df[,-c(1:7)]
- test.cases.df <-training.df[,-c(1:7)]
+ test.cases.df <-test.cases.df[,-c(1:7)]
 
 #Create a stratified random sample of the data into training and test setsseed(998)
 inTraining.matrix    <- createDataPartition(training.df$classe, p = 0.75, list = FALSE)
@@ -32,7 +32,10 @@ training.data.df <- training.df[inTraining.matrix, ]
 testing.data.df  <- training.df[-inTraining.matrix, ]
 
 modFit<-train(classe~.,data=training.data.df,method="rf",prox=TRUE)
-> modFit
+modFit
+pred <-predict(modFit,test.cases.df); test.cases.df$predRight <-pred==test.cases.df$classe
+table(pred,test.cases.df$classe)
+
 Random Forest 
 
 14718 samples
