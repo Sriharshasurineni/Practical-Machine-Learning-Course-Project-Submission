@@ -5,6 +5,7 @@ library(Hmisc)
 library(caret)
 library(randomForest)
 library(foreach)
+library(doParallel)
 set.seed(998)
 
 training.file   <- 'pml-training.csv'
