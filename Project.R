@@ -7,6 +7,7 @@ library(randomForest)
 library(foreach)
 library(doParallel)
 set.seed(998)
+options(warn=-1)
 
 training.file   <- 'pml-training.csv'
 test.cases.file <- 'pml-test.csv'
@@ -32,52 +33,87 @@ inTraining.matrix    <- createDataPartition(training.df$classe, p = 0.75, list =
 training.data.df <- training.df[inTraining.matrix, ]
 testing.data.df  <- training.df[-inTraining.matrix, ]
 
-modFit<-train(classe~.,data=training.data.df,method="rf",prox=TRUE)
-modFit
-pred <-predict(modFit,test.cases.df); test.cases.df$predRight <-pred==test.cases.df$classe
-table(pred,test.cases.df$classe)
-
-Random Forest 
-
-14718 samples
-   52 predictors
-    5 classes: 'A', 'B', 'C', 'D', 'E' 
-
-No pre-processing
-Resampling: Bootstrapped (25 reps) 
-
-Summary of sample sizes: 14718, 14718, 14718, 14718, 14718, 14718, ... 
-
-Resampling results across tuning parameters:
-
-  mtry  Accuracy  Kappa  Accuracy SD  Kappa SD
-  2     0.989     0.987  0.00169      0.00213 
-  27    0.99      0.987  0.0015       0.00189 
-  52    0.982     0.977  0.00385      0.00486 
-
-Accuracy was used to select the optimal model using  the largest value.
-The final value used for the model was mtry = 27. 
-
-pred <-predict(modFit,test.cases.df); test.cases.df$predRight <-pred==test.cases.df$classe table(pred,test.cases.df$classe)
-
-
-
 
 registerDoParallel()
-x <- training[-ncol(training)]
-y <- training$classe
+x <- training.data.df[-ncol(training.data.df)]
+y <- training.data.df$classe
 
-rf <- foreach(ntree=rep(250, 4), .combine=randomForest::combine, .packages='randomForest') %dopar% {
+rf <- foreach(ntree=rep(250, 5), .combine=randomForest::combine, .packages='randomForest') %dopar% {
 randomForest(x, y, ntree=ntree) 
 }
 
 #Confusion Matrix for Training
-predictionsTraining <- predict(rf, newdata=training)
-confusionMatrix(predictionsTraining,training$classe)
+training.predictions <- predict(rf, newdata=training.data.df)
+confusionMatrix(training.predictions,training.data.df$classe)
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    A    B    C    D    E
+         A 4185    0    0    0    0
+         B    0 2848    0    0    0
+         C    0    0 2567    0    0
+         D    0    0    0 2412    0
+         E    0    0    0    0 2706
+
+Overall Statistics
+                                     
+               Accuracy : 1          
+                 95% CI : (0.9997, 1)
+    No Information Rate : 0.2843     
+    P-Value [Acc > NIR] : < 2.2e-16  
+                                     
+                  Kappa : 1          
+ Mcnemar's Test P-Value : NA    
+ 
+ Statistics by Class:
+
+                     Class: A Class: B Class: C Class: D Class: E
+Sensitivity            1.0000   1.0000   1.0000   1.0000   1.0000
+Specificity            1.0000   1.0000   1.0000   1.0000   1.0000
+Pos Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
+Neg Pred Value         1.0000   1.0000   1.0000   1.0000   1.0000
+Prevalence             0.2843   0.1935   0.1744   0.1639   0.1839
+Detection Rate         0.2843   0.1935   0.1744   0.1639   0.1839
+Detection Prevalence   0.2843   0.1935   0.1744   0.1639   0.1839
+Balanced Accuracy      1.0000   1.0000   1.0000   1.0000   1.0000
+
+
 
 #Confusion Matrix for testing 
-predictionsTesting <- predict(rf, newdata=testing)
-confusionMatrix(predictionsTesting,testing$classe)
+testing.predictions <- predict(rf, newdata=testing.data.df)
+confusionMatrix(testing.predictions,testing.data.df$classe)
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    A    B    C    D    E
+         A 1394    5    0    0    0
+         B    0  943    8    0    0
+         C    0    1  845    5    0
+         D    0    0    2  799    2
+         E    1    0    0    0  899
+
+Overall Statistics
+                                          
+               Accuracy : 0.9951          
+                 95% CI : (0.9927, 0.9969)
+    No Information Rate : 0.2845          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.9938          
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: A Class: B Class: C Class: D Class: E
+Sensitivity            0.9993   0.9937   0.9883   0.9938   0.9978
+Specificity            0.9986   0.9980   0.9985   0.9990   0.9998
+Pos Pred Value         0.9964   0.9916   0.9929   0.9950   0.9989
+Neg Pred Value         0.9997   0.9985   0.9975   0.9988   0.9995
+Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837
+Detection Rate         0.2843   0.1923   0.1723   0.1629   0.1833
+Detection Prevalence   0.2853   0.1939   0.1735   0.1637   0.1835
+Balanced Accuracy      0.9989   0.9958   0.9934   0.9964   0.9988
 
 
 #Coursera provided code for submission
