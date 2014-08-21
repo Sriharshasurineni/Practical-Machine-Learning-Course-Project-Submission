@@ -69,8 +69,8 @@ randomForest(variables, classe, ntree=ntree)
 ```
 
 ##Confusion Matrix for Training
-```
 Predict and generate the Accuracy and confusion matrix for the training set (75% of the training data)
+```
 training.predictions <- predict(rf, newdata=training.data.df)
 confusionMatrix(training.predictions,training.data.df$classe)
 ```
