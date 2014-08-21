@@ -7,8 +7,7 @@ http://cran.r-project.org/web/packages/randomForest/randomForest.pdf
  
 I used the doParallel and foreach to speed up my 
 http://cran.r-project.org/web/packages/doParallel/vignettes/gettingstartedParallel.pdf
-
-'''
+```
 library(Hmisc)
 library(caret)
 library(randomForest)
@@ -16,7 +15,7 @@ library(foreach)
 library(doParallel)
 set.seed(998)
 options(warn=-1)
-'''
+```
 
 ## Loading Training Data
 The pml-training.csv data is actually used to devise training and testing sets.
@@ -116,4 +115,4 @@ answers
 Now write files and go to submission at coursera
 ```
 pml_write_files(answers)
-'''
+```
