@@ -61,45 +61,17 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h2>Abstract</h2>
 <p>We use the random forest method to estimate features for the Human Activity Recognition data set from Groupware.</p>
 </div>
+
 <div id="data" class="section level2">
 <h2>Data</h2>
 <p>The data is taken from the <a href="http://groupware.les.inf.puc-rio.br/har">Human Activity Recognition</a> programme at <a href="http://groupware.les.inf.puc-rio.br/">Groupware</a>.</p>
 <p>We believe that Random Forest Model that we train will predict testing data by an Accuracy of 95%.</p>
 
-<p>We then execute the downloads.</p>
-<pre class="r"><code>download.file(training.url, training.file, method='wget')
-download.file(test.url,     test.file,     method='wget')</code></pre>
-<p>In order to ensure all transformations are applied to both the trainig and test data sets equally, we employ the OOP method and create functions for every step. First we create a function to read data and set NAs and apply this to both datasets.</p>
-<pre class="r"><code>read.pml       &lt;- function(x) { read.csv(x, na.strings = c(&quot;&quot;, &quot;NA&quot;, &quot;#DIV/0!&quot;) ) }
-training       &lt;- read.pml(training.file)
-test           &lt;- read.pml(test.file)
-training       &lt;- training[,-c(1,5,6)]
-test           &lt;- test[,-c(1,5,6)]</code></pre>
-<pre class="r"><code>library(caret)
-trainingIndex  &lt;- createDataPartition(training$classe, p=.50, list=FALSE)
-training.train &lt;- training[ trainingIndex,]
-training.test  &lt;- training[-trainingIndex,]</code></pre>
-<p>Next we create a function to remove entire NA columns, and apply it to both data frames. Lastly we create a function that removes any variables with missing NAs and apply this to the training set.</p>
-<pre class="r"><code>rm.na.cols     &lt;- function(x) { x[ , colSums( is.na(x) ) &lt; nrow(x) ] }
-training.train &lt;- rm.na.cols(training.train)
-training.test  &lt;- rm.na.cols(training.test)
-complete       &lt;- function(x) {x[,sapply(x, function(y) !any(is.na(y)))] }
-incompl        &lt;- function(x) {names( x[,sapply(x, function(y) any(is.na(y)))] ) }
-trtr.na.var    &lt;- incompl(training.train)
-trts.na.var    &lt;- incompl(training.test)
-training.train &lt;- complete(training.train)
-training.test  &lt;- complete(training.test)</code></pre>
+<p>We estimate tree size and depth as follows; tree size is a multiple of depth.</p>
+<p>We further estimate that due to the test set being 25% of the data, we will also multiply the tree size by 10</p>
+<p>This approach comes from prior experimentation with scikit-learn and a variety of google searches and randomForest package for "R".</p>
 </div>
-<div id="method" class="section level2">
-<h2>Method</h2>
-<p>We use the <strong>Random Forests</strong> method <span class="citation">(Breiman 2001)</span>, which applies <strong>bagging</strong> to <strong>tree learners</strong>. The <strong>B</strong>ootstap <strong>Agg</strong>regat<strong>ing</strong> (bagging) method is described in Technical Report No. 421: Bagging Predictors <span class="citation">(Breiman 1996)</span>.</p>
-<pre class="r"><code>library(randomForest)
-random.forest &lt;- train(training.train[,-57],
-                       training.train$classe,
-                       tuneGrid=data.frame(mtry=3),
-                       trControl=trainControl(method=&quot;none&quot;)
-                       )</code></pre>
-</div>
+
 <div id="results" class="section level2">
 <h2>Results</h2>
 <p>Some statistics on the results</p>
