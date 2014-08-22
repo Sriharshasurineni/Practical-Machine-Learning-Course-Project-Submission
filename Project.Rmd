@@ -4,7 +4,6 @@
 I used the following packages not listed in the course materials:
 randomForest package because the caret package run times were extremely long.
 http://cran.r-project.org/web/packages/randomForest/randomForest.pdf
- 
 I used the doParallel and foreach to speed up my 
 http://cran.r-project.org/web/packages/doParallel/vignettes/gettingstartedParallel.pdf
 ```
