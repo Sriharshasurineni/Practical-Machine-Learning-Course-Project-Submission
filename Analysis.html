@@ -37,28 +37,16 @@
 
 <div id="data" class="section level2">
 <h2>Data</h2>
-<p>The data is taken from the <a href="http://groupware.les.inf.puc-rio.br/har">Human Activity Recognition</a> programme at <a href="http://groupware.les.inf.puc-rio.br/">Groupware</a>.</p>
-<p>We believe that Random Forest Model that we train will predict testing data by an Accuracy of 95%.</p>
-
-<p>We estimate tree size and depth as follows; tree size is a multiple of depth.</p>
-<p>According to <a href="http://www.stat.berkeley.edu/~breiman/Using_random_forests_V3.1.pdf"></a> Manual On Setting Up, Using, And Understanding 
-Random Forests V3.1 1</a> <p> The a large number of trees, 10000,  potentially make forstable variable importances, thus better models. </p>
-<p></p>
+<p>The data is taken from the <a href="http://groupware.les.inf.puc-rio.br/har">Human Activity Recognition</a> programme at <a href="http://groupware.les.inf.puc-rio.br/">Groupware</a>.  We believe that Random Forest Model that we train will predict testing data by an Accuracy of 95%.  We estimate tree size and depth as follows; tree size is a multiple of depth.  According to <a href="http://www.stat.berkeley.edu/~breiman/Using_random_forests_V3.1.pdf"> Manual On Setting Up, Using, And Understanding Random Forests V3.1 1</a>. The a large number of trees, 10000,  potentially make for stable variable importances, thus better models.</p>
 </div>
 
 <div id="results" class="section level2">
 <h2>Results</h2>
 <p>Confusion Matricies Compairson of  Training and Testing Sets</p>
-<p>We examine model training and predicttion and contrast results using the "Classe Variable cited in the above data set </p>
-<p>A detailed explaination of the R-Code and how it works can be found in the .Rmd file in this repo. </p>
-<p>We discuss compare the results from the training and testing sets using confusion matricies and statistics.</p>
-<p>The definitions for these terms and statistics can be found in Package Caret, August 15, 2014 Version 6.0-34.</p>
-<p>Accuracy of training compared to testing is 1.0 to 0.9951 indicating training for test prediction are accurate.</>
-<p>Sensitivity are 1.0 to 0.9993 meaning that the model  predictions predict "Classe" membership nearly 100% of the time </p>
-<p>Specificity are 1.0 to 0.9986 that the model predictions predict "Non-Classe" membership nearly 100% of the time </p>
-<p>In conclusion, the model is well-trained with the right tree size based onthe training  and test set provided</p>
-<p>Future research would include exploring data volume, feature set characteristic in choosing tree size and model parameters </p>
-<p>Following are the raw Confusion Matricies and Statistics results</p>
+<p>We examine model training and prediction and contrast results using the "Classe Variable cited in the above data set.  A detailed explaination of the R-Code and how it works can be found in the .Rmd file in this repo.  We discuss compare the results from the training and testing sets using confusion matricies and statistics.  The definitions for these terms and statistics can be found in Package Caret, August 15, 2014 Version 6.0-34.  Accuracy of training compared to testing is 1.0 to 0.9951 indicating training for test prediction are accurate.Sensitivity are 1.0 to 0.9993 meaning that the model  predictions predict "Classe" membership nearly 100% of the time.  Specificity are 1.0 to 0.9986 that the model predictions predict "Non-Classe" membership nearly 100% of the time.  In conclusion, the model is well-trained with the right tree size based on the training and test set provided.</p>
+
+<p>Future research would include exploring data volume, feature set characteristic in choosing tree size and model parameters.</p>
+<p>Following are the raw Confusion Matricies and Statistics results:</p>
 
 <pre><code>## Confusion Matrix and Statistics Training Set (75% Total Data Set)
 #          Reference
